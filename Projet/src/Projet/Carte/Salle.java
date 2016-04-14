@@ -46,7 +46,7 @@ public Boolean touch (Salle s1, Salle s2){
 	int H1 = getSalleH(s1);
 	int H2 = getSalleH(s2);
 	
-	return (Math.abs(X2-X1)<= Math.max(L1, L2) && Math.abs(Y2-Y1)<= Math.max(H1, H2));
+	return (Math.abs(X2-X1)<= (L1+L2)/2 && Math.abs(Y2-Y1)<= (H1+ H2)/2);
 		
 	}
 		
