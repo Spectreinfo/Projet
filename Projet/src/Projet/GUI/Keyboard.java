@@ -1,15 +1,14 @@
 package Projet.GUI;
-
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import Projet.view.Game;
+import Projet.Autre.Jeu;
 
 public class Keyboard implements KeyListener{
-	private Game game;
+	private Jeu jeu;
 	
-	public Keyboard(Game game){
-		this.game = game;
+	public Keyboard(Jeu jeu){
+		this.jeu = jeu;
 	}
 
 	@Override
@@ -17,25 +16,40 @@ public class Keyboard implements KeyListener{
 		int key = event.getKeyCode();
 		
 		switch (key){
+			// MOVE
 			case KeyEvent.VK_RIGHT: 
-				System.out.println("Right");
-				game.movePlayerRight();
+				jeu.movePlayerRight();
 				break;
 			case KeyEvent.VK_LEFT:
-				System.out.println("Left");
-				game.movePlayerLeft();
+				jeu.movePlayerLeft();
 				break;
 			case KeyEvent.VK_DOWN:
-				System.out.println("Down");
-				game.movePlayerDown();
+				jeu.movePlayerDown();
 				break;
 			case KeyEvent.VK_UP:
-				System.out.println("Up");
-				game.movePlayerUp();
+				jeu.movePlayerUp();
 				break;	
+			// ATTAQUE 
 			case KeyEvent.VK_SPACE:
-				System.out.println("Do something...");
+				jeu.persoAttaque();
 				break;
+				
+			// Inventaire
+			case KeyEvent.VK_E:
+				jeu.ramasse();
+				break;
+			case KeyEvent.VK_1:
+				jeu.actionPotion();
+				break;
+				
+			case KeyEvent.VK_2:
+				jeu.actionArmure();
+				break;
+				
+			case KeyEvent.VK_3:
+				jeu.actionArme();
+				break;
+				
 		}
 	}
 
