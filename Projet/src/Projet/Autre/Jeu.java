@@ -3,6 +3,7 @@ package Projet.Autre;
 
 import java.util.ArrayList;
 import Projet.Carte.Bloc;
+import Projet.Carte.Lave;
 import Projet.Carte.Salle;
 import Projet.Personnage.*;
 import Projet.GUI.Window;
@@ -20,8 +21,9 @@ public  class Jeu{
 	private int minimum_size=5;
 	private int taille_max;
 	private int nombre_de_salles;   
-	private int taille_de_la_carte;
+	public static int taille_de_la_carte;
 	private Inventaire inventaire = new Inventaire(6,0,0,0); /// GOD WHY ? 
+	private int emploi = 0;
 	
 	private ArrayList<Bloc> blocs= new ArrayList<Bloc>();
 	public ArrayList<Personnage> players= new ArrayList<Personnage>();
@@ -31,6 +33,9 @@ public  class Jeu{
 	private ArrayList<Potion> objetsPotions = new ArrayList<Potion>();
 	private ArrayList<Arme> objetsArmes = new ArrayList<Arme>();
 	private ArrayList<Armure> objetsArmures = new ArrayList<Armure>();
+	private ArrayList<Thread> threadList = new ArrayList<Thread>();
+	private ArrayList<Lave> laveList = new ArrayList<Lave>();
+	
 	
 	
 	private int rdl;
@@ -40,9 +45,12 @@ public  class Jeu{
 	
 	private int nombreEnnemi;
 	private int nbObjet;
+	private int nLave;
 	
 	private int attaqueJ = 30; 
 	private int attaqueE = 10; 
+	private int attaqueB = 5; 
+	
 	
 	private Window window;
 	
@@ -55,12 +63,19 @@ public  class Jeu{
 		nombre_de_salles = Math.round(Taille/10);
 		nombreEnnemi= Math.round(Taille/5);
 		nbObjet =Math.round(Taille/8);
+		nLave =Math.round(Taille/10);
 		
 		this.window = window; 
 		blocs.addAll(setBlocks());
 		int taille = blocs.size();
 		ArrayList<Integer> posRand = new ArrayList<Integer>();
 		ArrayList<Integer> posRand2 = new ArrayList<Integer>();
+		ArrayList<Integer> posRand3 = new ArrayList<Integer>();
+		for(int k=0; k<=nLave; k++){
+			posRand3.add(random.nextInt(taille));
+			Bloc blocStart = blocs.get(posRand3.get(k)); 
+			laveList.add(new Lave(this,attaqueB, blocStart.getPosX(),  blocStart.getPosY()));
+		}
 		for(int w=0; w<=nombreEnnemi; w++){
 			posRand.add(random.nextInt(taille));
             Bloc blocStart = blocs.get(posRand.get(w)); 
@@ -68,6 +83,7 @@ public  class Jeu{
             	players.add(new Joueur(this, vie, attaqueJ, 0, 0,   blocStart.getPosX(),  blocStart.getPosY()));
             }else{
             	players.add(new Ennemi(this, vie, attaqueE, 0, 0,   blocStart.getPosX(),  blocStart.getPosY()));
+            	threadList.add(players.get(w).getThread());
             }
 		}
 		for(int n=0; n<nbObjet;n++){
@@ -85,8 +101,7 @@ public  class Jeu{
 		objets.addAll(objetsArmes);
 		objets.addAll(objetsArmures);
 				
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
-		
+		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 	}
 
 	public ArrayList<Bloc> setBlocks(){
@@ -159,6 +174,11 @@ public  class Jeu{
 			int y = arme.getPosY();
 			map[x][y] = 6;
 		}
+		for(Lave lave:laveList){
+			int x = lave.getPosX();
+			int y = lave.getPosY();
+			map[x][y] = 7;
+		}
 		for(int c=0;c<players.size(); c++){
 			
 			int x = players.get(c).getPosX();
@@ -192,39 +212,46 @@ public  class Jeu{
 	}
 	
 	
-	
 	// Move 
 	
 	public void movePlayerLeft(){
 		players.get(0).changeOrientation(0);
 		if(players.get(0).canMove(-1,0)){
+			actionLaveIn();
 			players.get(0).move(-1, 0);
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+			actionLaveSt();
+			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 		}
 	}
 	public void movePlayerRight(){
 		players.get(0).changeOrientation(2);
 		if(players.get(0).canMove(1,0)){
-			players.get(0).move(1, 0);
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+			actionLaveIn();
+			players.get(0).move(1, 0);	
+			actionLaveSt();
+			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 		}
 	}
 	public void movePlayerDown(){
 		players.get(0).changeOrientation(3);
 		if(players.get(0).canMove(0, 1)){
+			actionLaveIn();
 			players.get(0).move(0, 1);
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+			actionLaveSt();
+			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 		}
 	}
 	public void movePlayerUp(){
 		players.get(0).changeOrientation(1);
 		if(players.get(0).canMove(0, -1)){
+			actionLaveIn();
 			players.get(0).move(0, -1);
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+			actionLaveSt();
+			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 		}
 	}
 	public void ennemiMove(){
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 	}
 
 	// Attaque
@@ -253,23 +280,80 @@ public  class Jeu{
 				int t = player.getPosY();
 				if(x==r && y==t){
 					player.changeVie(players.get(0).getAttaque());
+					if(inventaire.canThrowArme()){
+						emploi+=1;
+						if(emploi ==5){
+							actionArme();
+						}
+					}
 					if(player.getVie()<=0){
+						player.getThread().interrupt();
 						players.remove(player);
+						loot(r, t);
+						
+						renitialise();
 					}
 					break;
 				}
 			}
 		}
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 		
 	}
-	public void joueurSouffre(){
-		players.get(0).changeVie(attaqueE-players.get(0).getArmure());
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+	public void joueurSouffre(int degat){
+		System.out.println("j'ai mal");
+		players.get(0).changeVie(degat-players.get(0).getArmure());
+		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+		renitialise();
+	}
+	public void loot(int x, int y){
+		int i = random.nextInt(6);
+		if (i ==0){
+			objetsPotions.add(new Potion(x,  y));
+			objets.addAll(objetsPotions);
+		}else if(i==1){
+			objetsArmes.add(new Arme(x,  y));
+			objets.addAll(objetsArmes);
+		}else if(i==2){
+			objetsArmures.add(new Armure(x,  y));
+			objets.addAll(objetsArmures);
+		}
+	}
+	public boolean isOnLave(){
+		int t = players.get(0).getPosX();
+		int v = players.get(0).getPosY();
+		boolean value = false;
+		for(Lave lave:laveList){
+			if(t==lave.getPosX() && v==lave.getPosY()){
+				value = true;
+			}
+		}
+		return (value);
 	}
 	
-	
-	
+	private void actionLaveIn(){
+		if(isOnLave()){
+			int t = players.get(0).getPosX();
+			int v = players.get(0).getPosY();
+			for(Lave lave:laveList){
+				if(t==lave.getPosX() && v==lave.getPosY()){
+					lave.pause();
+				}
+			}
+		}
+	}
+	private void actionLaveSt(){
+		if(isOnLave()){
+			int t = players.get(0).getPosX();
+			int v = players.get(0).getPosY();
+			for(Lave lave:laveList){
+				if(t==lave.getPosX() && v==lave.getPosY()){
+					lave.launch();
+					System.out.println("j'ai lancé");
+				}
+			}
+		}
+	}
 	
 	
 	
@@ -279,20 +363,23 @@ public  class Jeu{
 		if(inventaire.canUtilisePotion()){
 			inventaire.utilisePotion();
 			players.get(0).heal(); 
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 		}
 	}
 	
 	public void actionArme(){
-		inventaire.throwArme();
-		players.get(0).perdAttaque();
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+		if(inventaire.canThrowArme()){
+			inventaire.throwArme();
+			players.get(0).perdAttaque();
+			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+		}
 	}
-	
 	public void actionArmure(){
-		inventaire.throwArmure();
-		players.get(0).perdArmure();
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+		if(inventaire.canThrowArmure()){
+			inventaire.throwArmure();
+			players.get(0).perdArmure();
+			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+		}
 	}
 	
 	public void ramasse(){
@@ -325,8 +412,16 @@ public  class Jeu{
 				}
 			}
 		}
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement());
+		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 	}
 
+	//// Renitialise 
+	public void renitialise(){
+		if(players.size() ==1 ||  players.get(0).getVie()<=0){
+			for (Thread thread: threadList){
+				thread.interrupt();
+			}
+			window = new Window(players.size()-1);
+		}
+	}
 }
-

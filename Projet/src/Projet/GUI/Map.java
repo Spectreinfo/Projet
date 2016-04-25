@@ -3,7 +3,7 @@ package Projet.GUI;
 import java.awt.Color;
 import java.awt.Graphics;
 import javax.swing.JPanel;
-
+import java.awt.Font;
 import Projet.Autre.Jeu;
 import Projet.Personnage.Joueur;
 
@@ -20,7 +20,7 @@ public class Map extends JPanel {
 	private int Armure;
 	private int dim = 50; 
 	private int[] Equipement; 
-
+	private int nEn;
 	
 	public Map(){
 		this.setFocusable(true);
@@ -31,18 +31,20 @@ public class Map extends JPanel {
 		  Image img = null;
 		  Image pot=null;
 		  Image sol=null;
-		  Image lave=null;
+		  Image eau=null;
 		  Image En=null;
 		  Image Armu=null;
 		  Image Arm=null;
+		  Image lave=null;
 		try {
 		    img = ImageIO.read(new File("Hero.jpg"));
 		    pot = ImageIO.read(new File("Potion_vie.jpg"));
 		    sol = ImageIO.read(new File("dalle.jpg"));
-		    lave = ImageIO.read(new File("lave.jpg"));
+		    eau = ImageIO.read(new File("eau.jpg"));
 		    En = ImageIO.read(new File("Ennemi.jpg"));
 		    Armu = ImageIO.read(new File("Armure.jpg"));
 		    Arm = ImageIO.read(new File("Arme.jpg"));
+		    lave = ImageIO.read(new File("lave.jpg"));
 		    
 		} catch (IOException e) {
 		}
@@ -65,15 +67,18 @@ public class Map extends JPanel {
 						//g.setColor(Color.RED);
 						g.drawImage(pot, i*dim, j*dim, dim, dim, this);
 					}else if(color == 1){
-						g.drawImage(lave, i*dim, j*dim, dim, dim, this);
+						g.drawImage(eau, i*dim, j*dim, dim, dim, this);
 					}else if(color == 5){
 						g.drawImage(Armu, i*dim, j*dim, dim, dim, this);
 					}else if(color == 6){
 						g.drawImage(Arm, i*dim, j*dim, dim, dim, this);
+					}else if(color ==7){
+						g.drawImage(lave, i*dim, j*dim, dim, dim, this);
 					}else if(color == 3){
 						g.drawImage(En, i*dim, j*dim, dim, dim, this);
 					}
-					g.setColor(Color.YELLOW);
+					g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
+					g.setColor(Color.BLACK);
 					g.drawString("vie : "+ Integer.toString(Life) , 10, 20);
 					g.drawString("attaque : "+ Integer.toString(Attaque) , 10, 40);
 					g.drawString("armure : "+ Integer.toString(Armure) , 10, 60);
@@ -81,12 +86,8 @@ public class Map extends JPanel {
 					g.drawString("- Potion : "+ Integer.toString(Equipement[1]), 20, 100);
 					g.drawString("- Armure : "+ Integer.toString(Equipement[2]), 20, 120);
 					g.drawString("- Arme : "+ Integer.toString(Equipement[3]), 20, 140);
-					//g.setColor(Color.BLACK);
-					//g.drawRect(x*30, y*30, 30, 30); 
-					//System.out.print(color);
-					//System.out.print(" ");
+					g.drawString("Nombre d'ennemi : "+ Integer.toString(nEn), 20, 950);
 				}
-				//System.out.println("");
 			}
 		}
 	}
@@ -103,8 +104,10 @@ public class Map extends JPanel {
 	public void setAttaque(int Attaque){
 		this.Attaque = Attaque;
 	}
-	
 	public void setEquipement(int[] Equipement){
 		this.Equipement = Equipement;
+	}
+	public void setnEn(int nEn){
+		this.nEn = nEn;
 	}
 }

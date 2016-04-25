@@ -10,6 +10,7 @@ public abstract class Personnage implements Runnable{
 	protected int attaque;
 	protected int armure;
 	protected int orientation; 
+	public Thread thread;
 	
 	public Personnage(Jeu jeu, int vie, int attaque, int armure, int orientation, int pX, int pY){
 		this.pX =pX;
@@ -35,7 +36,7 @@ public abstract class Personnage implements Runnable{
 	public boolean canMove(int x, int y){
 		final int C =jeu.view ;
 		int[][] visible_map = jeu.getVisibleMap();
-		return(visible_map[x+C][y+C]==0 ||visible_map[x+C][y+C]==4 ||visible_map[x+C][y+C]==5 || visible_map[x+C][y+C]==6 );	
+		return(visible_map[x+C][y+C]==0 ||visible_map[x+C][y+C]==4 ||visible_map[x+C][y+C]==5 || visible_map[x+C][y+C]==6 || visible_map[x+C][y+C]==7);	
 	}
 	public int getAttaque(){
 		return this.attaque;
@@ -60,6 +61,9 @@ public abstract class Personnage implements Runnable{
 	
 	
 	public void run(){	
+	}
+	public Thread getThread(){
+		return thread;
 	}
 	public void heal(){
 	}
