@@ -57,7 +57,7 @@ public class BouleFeu implements Runnable {
 		jeu.Affiche();
 	}
 	private void explode(){
-		thread.interrupt();
+		this.thread.interrupt();
 		jeu.personnageSubisse(this);
 	}
 	

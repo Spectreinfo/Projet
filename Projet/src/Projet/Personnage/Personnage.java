@@ -56,10 +56,6 @@ public abstract class Personnage implements Runnable{
 	public void changeOrientation(int i){
 		this.orientation=i; 
 	}
-	
-	
-	
-	
 	public void run(){	
 	}
 	public Thread getThread(){

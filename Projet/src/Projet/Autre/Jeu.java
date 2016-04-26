@@ -22,7 +22,7 @@ public  class Jeu{
 	private int taille_max;
 	private int nombre_de_salles;   
 	public static int taille_de_la_carte;
-	private Inventaire inventaire = new Inventaire(6,0,0,0, 4);
+	private Inventaire inventaire = new Inventaire(6,0, 0, 0, 1);
 	private int emploi = 0;
 	
 	private ArrayList<Bloc> blocs= new ArrayList<Bloc>();
@@ -385,7 +385,9 @@ public  class Jeu{
 		}else{
 			player.changeVie(attaqueF);
 			if(player.getVie()<=0){
+				player.getThread().interrupt();
 				players.remove(player);
+				
 			}
 		}
 		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);

@@ -1,6 +1,6 @@
 package Projet.Object;
 
-public class Objet {
+public abstract class Objet {
 	private int x; 
 	private int y; 
 	protected int type; 
