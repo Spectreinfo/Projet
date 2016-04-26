@@ -28,7 +28,8 @@ public class Map extends JPanel {
 	}
 	
 	public void paint(Graphics g) { 
-		  Image img = null;
+		  Image heroB = null;
+		  Image heroL = null;
 		  Image pot=null;
 		  Image sol=null;
 		  Image eau=null;
@@ -39,7 +40,8 @@ public class Map extends JPanel {
 		  Image parchemin=null;
 		  Image boule=null;
 		try {
-		    img = ImageIO.read(new File("Hero.jpg"));
+		    heroB = ImageIO.read(new File("HeroB.jpg"));
+		    heroL = ImageIO.read(new File("HeroLava.jpg"));
 		    pot = ImageIO.read(new File("Potion_vie.jpg"));
 		    sol = ImageIO.read(new File("dalle.jpg"));
 		    eau = ImageIO.read(new File("eau.jpg"));
@@ -64,10 +66,15 @@ public class Map extends JPanel {
 					int color = mapMatrix[i][j];
 					
 					g.fillRect(x*dim, y*dim, dim,dim);
-					g.drawImage(img, dim*(Jeu.view), dim*(Jeu.view), dim, dim, this);
+					if(color == 2){
+						g.drawImage(heroB, dim*(Jeu.view), dim*(Jeu.view), dim, dim, this);
+					}else if(color == 10){
+						g.drawImage(heroL, i*dim, j*dim, dim, dim, this);
+					}
 					if(color == 0){
 						g.drawImage(sol, i*dim, j*dim, dim, dim, this);
 					}
+						
 					if(color == 4){
 						//g.setColor(Color.RED);
 						g.drawImage(pot, i*dim, j*dim, dim, dim, this);

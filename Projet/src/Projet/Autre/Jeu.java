@@ -174,11 +174,6 @@ public  class Jeu{
 			int y = arme.getPosY();
 			map[x][y] = 6;
 		}
-		for(Lave lave:laveList){
-			int x = lave.getPosX();
-			int y = lave.getPosY();
-			map[x][y] = 7;
-		}
 		for(Parchemin parchemin:listParchemins){
 			int x = parchemin.getPosX();
 			int y = parchemin.getPosY();
@@ -197,6 +192,17 @@ public  class Jeu{
 				map[x][y] = 2;
 			}else{
 				map[x][y] = 3;
+			}
+		}
+		for(Lave lave:laveList){
+			int a = players.get(0).getPosX();
+			int b =  players.get(0).getPosY();
+			int x = lave.getPosX();
+			int y = lave.getPosY();
+			if(a==x && b==y){
+				map[x][y] = 10;
+			}else{
+			map[x][y] = 7;
 			}
 		}
 		return map;
