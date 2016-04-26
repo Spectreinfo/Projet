@@ -23,7 +23,6 @@ public  class Jeu{
 	private int nombre_de_salles;   
 	public static int taille_de_la_carte;
 	private Inventaire inventaire = new Inventaire(6,0, 0, 0, 1);
-	private int emploi = 0;
 	
 	private ArrayList<Bloc> blocs= new ArrayList<Bloc>();
 	public ArrayList<Personnage> players= new ArrayList<Personnage>();
@@ -48,6 +47,8 @@ public  class Jeu{
 	private int nombreEnnemi;
 	private int nbObjet;
 	private int nLave;
+	
+	private int emploi = 0;
 	
 	private int attaqueJ = 30; 
 	private int attaqueE = 10; 
