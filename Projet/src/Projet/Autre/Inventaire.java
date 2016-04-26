@@ -7,18 +7,17 @@ public class Inventaire {
 	private int nbArmure; 
 	private int nbArme;
 	private int occup;
-	int[] equipement = new int[4]; 
+	private int nbParchemin;
+	int[] equipement = new int[5]; 
 	
-	Inventaire(int taille, int nbPotion, int nbArmure, int nbArme){
+	Inventaire(int taille, int nbPotion, int nbArmure, int nbArme, int nbParchemin){
 		this.taille=taille; 
 		this. nbArmure= nbArmure;
 		this. nbPotion= nbPotion;
+		this.nbParchemin = nbParchemin;
 		this.nbArme = nbArme;
-		this.occup = this.nbPotion + this.nbArmure + this.nbArme;
-		this.equipement[0]= this.occup; 
-		this.equipement[1]= this.nbPotion; 
-		this.equipement[2]= this.nbArmure; 
-		this.equipement[3]= this.nbArme;
+		this.occup = this.nbPotion + this.nbArmure + this.nbArme + this.nbParchemin;
+		setEquipement();
 	}
 	
 	public int[] getEquipement(){
@@ -30,6 +29,7 @@ public class Inventaire {
 		this.equipement[1]= this.nbPotion; 
 		this.equipement[2]= this.nbArmure; 
 		this.equipement[3]= this.nbArme;
+		this.equipement[4]= this.nbParchemin;
 		return this.equipement;
 	}
 	
@@ -101,5 +101,24 @@ public class Inventaire {
 		 return this.equipement; 
 	}
 
-
+	
+	public boolean canUseBoule(){
+		return(nbParchemin !=0);
+	}
+	public  int[] useBoule(){
+		if(canUseBoule()){
+			this.nbParchemin-=1;
+			 this.occup-=1;
+			 setEquipement(); 
+		} 
+		return this.equipement; 
+	}
+	public int[] addParchemin(){
+		 this.nbParchemin +=1; 
+		 this.occup +=1;
+		 setEquipement();
+		 return this.equipement; 
+	}
+	
+	
 }

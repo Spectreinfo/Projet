@@ -119,7 +119,7 @@ public class Ennemi  extends Personnage  implements Barbare,Archerie,Magie,Runna
 					pY = pY-1;
 				}
 			}
-			jeu.ennemiMove();
+			jeu.Affiche();
 		}
 	}
 	
@@ -170,7 +170,7 @@ public class Ennemi  extends Personnage  implements Barbare,Archerie,Magie,Runna
 		int m = pX;
 		int l = pY;
 		int[][] visible_map = jeu.getMap();
-		return(visible_map[x+m][y+l]==0 ||visible_map[x+m][y+l]==4 ||visible_map[x+m][y+l]==5 || visible_map[x+m][y+l]==6 );	
+		return(visible_map[x+m][y+l]==0 ||visible_map[x+m][y+l]==4 ||visible_map[x+m][y+l]==5 || visible_map[x+m][y+l]==6 || visible_map[x+m][y+l]==8);	
 	}
 
 	

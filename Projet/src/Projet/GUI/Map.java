@@ -36,6 +36,8 @@ public class Map extends JPanel {
 		  Image Armu=null;
 		  Image Arm=null;
 		  Image lave=null;
+		  Image parchemin=null;
+		  Image boule=null;
 		try {
 		    img = ImageIO.read(new File("Hero.jpg"));
 		    pot = ImageIO.read(new File("Potion_vie.jpg"));
@@ -45,12 +47,15 @@ public class Map extends JPanel {
 		    Armu = ImageIO.read(new File("Armure.jpg"));
 		    Arm = ImageIO.read(new File("Arme.jpg"));
 		    lave = ImageIO.read(new File("lave.jpg"));
+		    parchemin = ImageIO.read(new File("Parchemin.jpg"));
+		    boule = ImageIO.read(new File("BouleFeu.png"));
 		    
 		} catch (IOException e) {
 		}
 		
 		if(mapMatrix == null || Life<=0){
-			g.drawString("vous êtes mort" , dim*(Jeu.view), dim*(Jeu.view));
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 55)); 
+			g.drawString("vous êtes mort" , 400, 400);
 		}else{
 			for(int i = 0; i<mapMatrix.length; i++){
 				for(int j = 0; j<mapMatrix.length; j++){
@@ -74,6 +79,10 @@ public class Map extends JPanel {
 						g.drawImage(Arm, i*dim, j*dim, dim, dim, this);
 					}else if(color ==7){
 						g.drawImage(lave, i*dim, j*dim, dim, dim, this);
+					}else if(color ==8){
+						g.drawImage(parchemin, i*dim, j*dim, dim, dim, this);
+					}else if(color ==9){
+						g.drawImage(boule, i*dim, j*dim, dim, dim, this);
 					}else if(color == 3){
 						g.drawImage(En, i*dim, j*dim, dim, dim, this);
 					}
@@ -83,9 +92,10 @@ public class Map extends JPanel {
 					g.drawString("attaque : "+ Integer.toString(Attaque) , 10, 40);
 					g.drawString("armure : "+ Integer.toString(Armure) , 10, 60);
 					g.drawString("Inventaire : "+ Integer.toString(Equipement[0]) +"/6" , 10, 80);
-					g.drawString("- Potion : "+ Integer.toString(Equipement[1]), 20, 100);
-					g.drawString("- Armure : "+ Integer.toString(Equipement[2]), 20, 120);
-					g.drawString("- Arme : "+ Integer.toString(Equipement[3]), 20, 140);
+					g.drawString("- Potions : "+ Integer.toString(Equipement[1]), 20, 100);
+					g.drawString("- Armures : "+ Integer.toString(Equipement[2]), 20, 120);
+					g.drawString("- Armes : "+ Integer.toString(Equipement[3]), 20, 140);
+					g.drawString("- Parchemins : "+ Integer.toString(Equipement[4]), 20, 160);
 					g.drawString("Nombre d'ennemi : "+ Integer.toString(nEn), 20, 950);
 				}
 			}

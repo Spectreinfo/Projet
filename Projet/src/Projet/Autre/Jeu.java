@@ -22,7 +22,7 @@ public  class Jeu{
 	private int taille_max;
 	private int nombre_de_salles;   
 	public static int taille_de_la_carte;
-	private Inventaire inventaire = new Inventaire(6,0,0,0); /// GOD WHY ? 
+	private Inventaire inventaire = new Inventaire(6,0,0,0, 4);
 	private int emploi = 0;
 	
 	private ArrayList<Bloc> blocs= new ArrayList<Bloc>();
@@ -35,6 +35,8 @@ public  class Jeu{
 	private ArrayList<Armure> objetsArmures = new ArrayList<Armure>();
 	private ArrayList<Thread> threadList = new ArrayList<Thread>();
 	private ArrayList<Lave> laveList = new ArrayList<Lave>();
+	private ArrayList<BouleFeu> listBoules = new ArrayList<BouleFeu>();
+	private ArrayList<Parchemin> listParchemins = new ArrayList<Parchemin>();
 	
 	
 	
@@ -50,6 +52,8 @@ public  class Jeu{
 	private int attaqueJ = 30; 
 	private int attaqueE = 10; 
 	private int attaqueB = 5; 
+	private int attaqueF = 100;
+	private int portée = 2; 
 	
 	
 	private Window window;
@@ -63,7 +67,7 @@ public  class Jeu{
 		nombre_de_salles = Math.round(Taille/10);
 		nombreEnnemi= Math.round(Taille/5);
 		nbObjet =Math.round(Taille/8);
-		nLave =Math.round(Taille/10);
+		nLave =Math.round(Taille/2);
 		
 		this.window = window; 
 		blocs.addAll(setBlocks());
@@ -129,12 +133,8 @@ public  class Jeu{
 				}
 				if(value){
 					Salles.add(Salle);
-					//couloir.addAll(Salles.get(i-1).salleLien(Salle));
 				    i++;
-					
-				
 				}
-			
 			}
 		}
 		for(int v=1; v<=nombre_de_salles-1; v++){
@@ -179,6 +179,16 @@ public  class Jeu{
 			int y = lave.getPosY();
 			map[x][y] = 7;
 		}
+		for(Parchemin parchemin:listParchemins){
+			int x = parchemin.getPosX();
+			int y = parchemin.getPosY();
+			map[x][y] = 8;
+		}
+		for(BouleFeu boule:listBoules){
+			int x = boule.getPosX();
+			int y = boule.getPosY();
+			map[x][y] = 9;
+		}
 		for(int c=0;c<players.size(); c++){
 			
 			int x = players.get(c).getPosX();
@@ -189,8 +199,6 @@ public  class Jeu{
 				map[x][y] = 3;
 			}
 		}
-		
-		//System.out.println(map);
 		return map;
 	}
 	public int[][] setVisibleMap(int[][] map){
@@ -250,7 +258,7 @@ public  class Jeu{
 			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 		}
 	}
-	public void ennemiMove(){
+	public void Affiche(){
 		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 	}
 
@@ -301,13 +309,12 @@ public  class Jeu{
 		
 	}
 	public void joueurSouffre(int degat){
-		System.out.println("j'ai mal");
 		players.get(0).changeVie(degat-players.get(0).getArmure());
 		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
 		renitialise();
 	}
 	public void loot(int x, int y){
-		int i = random.nextInt(6);
+		int i = random.nextInt(8);
 		if (i ==0){
 			objetsPotions.add(new Potion(x,  y));
 			objets.addAll(objetsPotions);
@@ -317,6 +324,9 @@ public  class Jeu{
 		}else if(i==2){
 			objetsArmures.add(new Armure(x,  y));
 			objets.addAll(objetsArmures);
+		}else if(i==3){
+			listParchemins.add(new Parchemin(x,  y));
+			objets.addAll(listParchemins);
 		}
 	}
 	public boolean isOnLave(){
@@ -355,10 +365,58 @@ public  class Jeu{
 		}
 	}
 	
+	public void personnageSubisse(BouleFeu boule){
+		int a = boule.getPosX();
+		int b = boule.getPosY();
+		listBoules.remove(boule);
+		for(int i = a-portée; i<=a+portée; i++){
+			for(int j =  b-portée; j<= b+portée; j++){
+				for(int g=0;g<players.size();g++){
+					if(i == players.get(g).getPosX() && j == players.get(g).getPosY()){
+						personnageSouffre(players.get(g) ,g);
+					}
+				}
+			}
+		}
+	}
+	private void personnageSouffre(Personnage player, int pos){
+		if(pos==0){
+			joueurSouffre(attaqueF);
+		}else{
+			player.changeVie(attaqueF);
+			if(player.getVie()<=0){
+				players.remove(player);
+			}
+		}
+		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+	}
 	
 	
 	// Utilise equipement
 	
+	public void actionBoule(){
+		if(inventaire.canUseBoule()){
+			inventaire.useBoule();
+			int a = players.get(0).getPosX();
+			int b = players.get(0).getPosY();
+			int orient = players.get(0).getOrientation();
+			int c =0;
+			int d =0;
+			if(orient ==0){
+				c=-1; 
+			}else if(orient ==1){
+				d=-1; 
+			}else if(orient ==2){
+				c=1;
+			}else if(orient ==3){
+				d=1;
+			}
+			listBoules.add(new BouleFeu(this, a+c, b+d, c, d, listBoules.size()));
+			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+		}
+		
+	}
+
 	public void actionPotion(){
 		if(inventaire.canUtilisePotion()){
 			inventaire.utilisePotion();
@@ -408,11 +466,16 @@ public  class Jeu{
 						objetsArmes.remove(objet);
 						objets.remove(objet);
 						break;
+					}else if(objet.getType()==3){
+						inventaire.addParchemin();
+						listParchemins.remove(objet);
+						objets.remove(objet);
+						break;
 					}
 				}
 			}
-		}
 		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+		}
 	}
 
 	//// Renitialise 

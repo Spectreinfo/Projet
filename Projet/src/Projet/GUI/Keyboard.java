@@ -33,6 +33,9 @@ public class Keyboard implements KeyListener{
 			case KeyEvent.VK_SPACE:
 				jeu.persoAttaque();
 				break;
+			case KeyEvent.VK_SHIFT:
+				jeu.actionBoule();
+				break;
 				
 			// Inventaire
 			case KeyEvent.VK_E:
