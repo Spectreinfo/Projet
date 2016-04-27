@@ -1,7 +1,9 @@
 package Projet.Carte;
 
+import java.io.Serializable;
 
-public class Bloc{
+public class Bloc implements Serializable {
+  private static final long serialVersionUID = 0L;
   private int posx; 
   private int posy; 
   

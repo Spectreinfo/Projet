@@ -2,6 +2,7 @@ package Projet.GUI;
 
 import java.awt.Color;
 import java.awt.event.KeyListener;
+
 import javax.swing.*;
 
 
@@ -10,10 +11,11 @@ public class Window extends JPanel {
 	private JPanel panel;
 	private JButton restartButton;
 	private JTextArea textArea;
+	JFrame window;
 	//private InventaireAffichage inv = new InventaireAffichage();
 	
 	public Window(){
-	    JFrame window = new JFrame("Inglorious batârds");
+	    JFrame window = new JFrame("Gandalf vs the JARS JARS");
 	    window.setLocationRelativeTo(null);
 	    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    window.setBounds(0, 0, 1000, 1020);
@@ -24,7 +26,7 @@ public class Window extends JPanel {
 	   }	
 	public Window(int nEn){
 		 
-		JFrame newWindow = new JFrame("Inglorious batârds");
+		JFrame newWindow = new JFrame("Gandalf vs the JARS JARS");
 		newWindow.setLocationRelativeTo(null);
 		newWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		newWindow.getContentPane().setBackground(Color.BLACK);

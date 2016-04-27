@@ -1,6 +1,7 @@
 package Projet.GUI;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.Serializable;
 
 import Projet.Autre.Jeu;
 
@@ -53,6 +54,10 @@ public class Keyboard implements KeyListener{
 				jeu.actionArme();
 				break;
 				
+				// Sauvegarde
+			case KeyEvent.VK_F5:
+				jeu.sauvegarde();
+				break;
 		}
 	}
 

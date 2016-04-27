@@ -1,14 +1,17 @@
 package Projet.Personnage;
 
+import java.io.Serializable;
+
 import Projet.Autre.Jeu;
 
-public class BouleFeu implements Runnable {
+public class BouleFeu implements Runnable,Serializable {
+	private static final long serialVersionUID = 0L;
 	private Jeu jeu;
 	private int pX;
 	private int pY;
 	private int dirX;
 	private int dirY;
-	private Thread thread; 
+	private transient Thread thread; 
 	private int pos;
 	private int sleepTime =100;
 	

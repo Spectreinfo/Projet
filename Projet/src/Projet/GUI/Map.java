@@ -10,10 +10,13 @@ import Projet.Personnage.Joueur;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.io.Serializable;
+
 import javax.imageio.*;
 
 
-public class Map extends JPanel {
+public class Map extends JPanel implements Serializable {
+	private static final long serialVersionUID = 0L;
 	private int[][] mapMatrix;
 	private int Life;
 	private int Attaque;
@@ -55,9 +58,15 @@ public class Map extends JPanel {
 		} catch (IOException e) {
 		}
 		
-		if(mapMatrix == null || Life<=0){
+		if(mapMatrix == null){
 			g.setFont(new Font("TimesRoman", Font.PLAIN, 55)); 
-			g.drawString("vous êtes mort" , 400, 400);
+			g.drawString("Mauvais chargement, recommencez" , 100, 400);
+		}else if(Life<=0){
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 55)); 
+			g.drawString("Vous êtes morts" , 400, 400);
+		}else if(nEn==0){
+			g.setFont(new Font("TimesRoman", Font.PLAIN, 55)); 
+			g.drawString("Vous avez gagné" , 400, 400);
 		}else{
 			for(int i = 0; i<mapMatrix.length; i++){
 				for(int j = 0; j<mapMatrix.length; j++){

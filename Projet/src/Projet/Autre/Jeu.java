@@ -1,6 +1,11 @@
 package Projet.Autre;
 
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import Projet.Carte.Bloc;
 import Projet.Carte.Lave;
@@ -12,8 +17,8 @@ import Projet.Object.*;
 import java.util.Random;
 
 
-public  class Jeu{
-	
+public  class Jeu implements Serializable { 
+	private static final long serialVersionUID = 0L;
 	Random random = new Random();
 	
 	public static int view =10; 
@@ -21,18 +26,18 @@ public  class Jeu{
 	private int minimum_size=5;
 	private int taille_max;
 	private int nombre_de_salles;   
-	public static int taille_de_la_carte;
-	private Inventaire inventaire = new Inventaire(6,0, 0, 0, 1);
+	public int taille_de_la_carte;
+	public Inventaire inventaire = new Inventaire(6,0, 0, 0, 1);
 	
 	private ArrayList<Bloc> blocs= new ArrayList<Bloc>();
 	public ArrayList<Personnage> players= new ArrayList<Personnage>();
-	private ArrayList<Salle> Salles = new ArrayList<Salle>();
+	private transient  ArrayList<Salle> Salles = new ArrayList<Salle>();
 	
 	private ArrayList<Objet> objets = new ArrayList<Objet>();
 	private ArrayList<Potion> objetsPotions = new ArrayList<Potion>();
 	private ArrayList<Arme> objetsArmes = new ArrayList<Arme>();
 	private ArrayList<Armure> objetsArmures = new ArrayList<Armure>();
-	private ArrayList<Thread> threadList = new ArrayList<Thread>();
+	private transient ArrayList<Thread> threadList = new ArrayList<Thread>();
 	private ArrayList<Lave> laveList = new ArrayList<Lave>();
 	private ArrayList<BouleFeu> listBoules = new ArrayList<BouleFeu>();
 	private ArrayList<Parchemin> listParchemins = new ArrayList<Parchemin>();
@@ -57,7 +62,7 @@ public  class Jeu{
 	private int portée = 2; 
 	
 	
-	private Window window;
+	public transient Window window;
 	
 	
 	int[][] mapVisible = new int[2*view+1][2*view+1];
@@ -106,7 +111,7 @@ public  class Jeu{
 		objets.addAll(objetsArmes);
 		objets.addAll(objetsArmures);
 				
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+		Affiche();	
 	}
 
 	public ArrayList<Bloc> setBlocks(){
@@ -216,7 +221,6 @@ public  class Jeu{
 			for(int j =  b-view; j<= b+view; j++){
 				int y= j - (b-view);
 				mapVisible[x][y] = map[i][j];
-
 			}
 		}
 	return(mapVisible);
@@ -235,7 +239,7 @@ public  class Jeu{
 			actionLaveIn();
 			players.get(0).move(-1, 0);
 			actionLaveSt();
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+			Affiche();	
 		}
 	}
 	public void movePlayerRight(){
@@ -244,7 +248,7 @@ public  class Jeu{
 			actionLaveIn();
 			players.get(0).move(1, 0);	
 			actionLaveSt();
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+			Affiche();	
 		}
 	}
 	public void movePlayerDown(){
@@ -253,7 +257,7 @@ public  class Jeu{
 			actionLaveIn();
 			players.get(0).move(0, 1);
 			actionLaveSt();
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+			Affiche();	
 		}
 	}
 	public void movePlayerUp(){
@@ -262,7 +266,7 @@ public  class Jeu{
 			actionLaveIn();
 			players.get(0).move(0, -1);
 			actionLaveSt();
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+			Affiche();
 		}
 	}
 	public void Affiche(){
@@ -312,12 +316,12 @@ public  class Jeu{
 				}
 			}
 		}
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+		Affiche();	
 		
 	}
 	public void joueurSouffre(int degat){
 		players.get(0).changeVie(degat-players.get(0).getArmure());
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+		Affiche();	
 		renitialise();
 	}
 	public void loot(int x, int y){
@@ -394,10 +398,11 @@ public  class Jeu{
 			if(player.getVie()<=0){
 				player.getThread().interrupt();
 				players.remove(player);
+				renitialise();
 				
 			}
 		}
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+		Affiche();	
 	}
 	
 	
@@ -421,7 +426,7 @@ public  class Jeu{
 				d=1;
 			}
 			listBoules.add(new BouleFeu(this, a+c, b+d, c, d, listBoules.size()));
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+			Affiche();	
 		}
 		
 	}
@@ -430,7 +435,7 @@ public  class Jeu{
 		if(inventaire.canUtilisePotion()){
 			inventaire.utilisePotion();
 			players.get(0).heal(); 
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+			Affiche();	
 		}
 	}
 	
@@ -438,14 +443,14 @@ public  class Jeu{
 		if(inventaire.canThrowArme()){
 			inventaire.throwArme();
 			players.get(0).perdAttaque();
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+			Affiche();	
 		}
 	}
 	public void actionArmure(){
 		if(inventaire.canThrowArmure()){
 			inventaire.throwArmure();
 			players.get(0).perdArmure();
-			window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+			Affiche();	
 		}
 	}
 	
@@ -483,7 +488,7 @@ public  class Jeu{
 					}
 				}
 			}
-		window.draw(this.setVisibleMap(getMap()), players.get(0).getVie(), players.get(0).getAttaque(),players.get(0).getArmure(), inventaire.getEquipement(), players.size()-1);
+			Affiche();	
 		}
 	}
 
@@ -494,6 +499,41 @@ public  class Jeu{
 				thread.interrupt();
 			}
 			window = new Window(players.size()-1);
+		}
+	}
+	
+	///sauvegarde
+	public void sauvegarde(){
+		ObjectOutputStream oos;
+		try {
+			oos = new ObjectOutputStream(new FileOutputStream("Sauvegarde"));
+			oos.writeObject(this);
+			oos.flush(); 
+			oos.close(); 
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public ArrayList<Bloc> bloclist(){
+		return (blocs);
+	}
+	public void setWindow(){
+		int[][] map= getMap();
+		setVisibleMap(map);
+		System.out.println(map[40][42]);
+		window = this.window;
+	}
+	public void relance(){
+		for(int i=1; i<players.size();i++){
+			players.get(i).actionneThread();
+		}
+		for (Lave lave:laveList){
+			lave.actionneThread();;
 		}
 	}
 }

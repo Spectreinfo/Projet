@@ -1,7 +1,9 @@
 package Projet.Autre;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Inventaire {
+public class Inventaire implements Serializable {
+	private static final long serialVersionUID = 0L;
 	private int taille;
 	private int nbPotion; 
 	private int nbArmure; 

@@ -1,8 +1,12 @@
 package Projet.Personnage;
 import Projet.GUI.Window;
+
+import java.io.Serializable;
+
 import Projet.Autre.Jeu; 
 
-public abstract class Personnage implements Runnable{
+public abstract class Personnage implements Runnable,Serializable {
+	private static final long serialVersionUID = 0L;
 	protected Jeu jeu;
 	protected int pX;
 	protected int pY;
@@ -10,7 +14,7 @@ public abstract class Personnage implements Runnable{
 	protected int attaque;
 	protected int armure;
 	protected int orientation; 
-	public Thread thread;
+	public transient Thread thread;
 	
 	public Personnage(Jeu jeu, int vie, int attaque, int armure, int orientation, int pX, int pY){
 		this.pX =pX;
@@ -48,7 +52,9 @@ public abstract class Personnage implements Runnable{
 		return this.vie; 
 	}
 	public void changeVie(int a){
-		this.vie -=a;
+		if(a>0){
+			this.vie -=a;
+		}
 	}
 	public int getOrientation(){
 		return this.orientation; 
@@ -70,6 +76,8 @@ public abstract class Personnage implements Runnable{
 	public void changeArmure(){
 	}
 	public void perdArmure(){
+	}
+	public void actionneThread(){
 	}
 
 }

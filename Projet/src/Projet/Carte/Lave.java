@@ -3,8 +3,8 @@ package Projet.Carte;
 import Projet.Autre.Jeu;
 
 public class Lave extends Bloc implements Runnable{
-	public Thread thread; 
-	private static int attaque;
+	public transient Thread thread; 
+	private int attaque;
 	private Jeu jeu;		
 	private int sleepTime =1000;
 
@@ -26,16 +26,18 @@ public class Lave extends Bloc implements Runnable{
 	public void run(){
 		try{
 			while(true){
-				System.out.println("coucou");
 				this.act();
-				System.out.println(attaque);
 				Thread.sleep(sleepTime);
 			}
 		}catch(Exception e){};
 	}
 	private void act(){
-		System.out.println("caca");
 		jeu.joueurSouffre(attaque);
+	}
+	public void actionneThread(){
+		thread = new Thread(this);
+		thread.start();
+		thread.suspend();
 	}
 }
 

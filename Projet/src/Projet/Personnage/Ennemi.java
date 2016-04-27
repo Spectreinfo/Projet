@@ -5,7 +5,7 @@ import Projet.Autre.Jeu;
 
 public class Ennemi  extends Personnage  implements Barbare,Archerie,Magie,Runnable {
 	Random random = new Random();
-	private Thread thread; 
+	private transient Thread thread; 
 	private int sleepTime =500;
 	
 	public Ennemi(Jeu jeu,int vie, int attaque, int armure, int orientation, int pX, int pY){
@@ -165,13 +165,14 @@ public class Ennemi  extends Personnage  implements Barbare,Archerie,Magie,Runna
 	}
 	
 	public boolean canMove(int x, int y){
-		//int m = posVisX();
-		//int l =posVisY();
 		int m = pX;
 		int l = pY;
 		int[][] visible_map = jeu.getMap();
 		return(visible_map[x+m][y+l]==0 ||visible_map[x+m][y+l]==4 ||visible_map[x+m][y+l]==5 || visible_map[x+m][y+l]==6 || visible_map[x+m][y+l]==8);	
 	}
-
+	public void actionneThread(){
+		thread = new Thread(this);
+		thread.start();
+	}
 	
 }
