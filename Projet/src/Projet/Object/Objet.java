@@ -13,6 +13,7 @@ public abstract class Objet implements Serializable {
 		this.y = y; 
 	}
 	
+//GETTERS
 	public int getPosX(){
 		return this.x; 
 	}

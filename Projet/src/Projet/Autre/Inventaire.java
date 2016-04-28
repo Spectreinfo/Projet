@@ -10,9 +10,11 @@ public class Inventaire implements Serializable {
 	private int nbArme;
 	private int occup;
 	private int nbParchemin;
-	int[] equipement = new int[5]; 
+	private int[] equipement = new int[5]; 
 	
-	Inventaire(int taille, int nbPotion, int nbArmure, int nbArme, int nbParchemin){
+	
+	// Constructeur
+	public Inventaire(int taille, int nbPotion, int nbArmure, int nbArme, int nbParchemin){
 		this.taille=taille; 
 		this. nbArmure= nbArmure;
 		this. nbPotion= nbPotion;
@@ -21,6 +23,8 @@ public class Inventaire implements Serializable {
 		this.occup = this.nbPotion + this.nbArmure + this.nbArme + this.nbParchemin;
 		setEquipement();
 	}
+	
+	//getter & setter
 	
 	public int[] getEquipement(){
 		return this.equipement; 
@@ -36,12 +40,13 @@ public class Inventaire implements Serializable {
 	}
 	
 	
+	//GESTION
 	
-	
-
+	//Potion
 	public boolean canUtilisePotion(){
 		return(nbPotion !=0);
 	}
+	
 	public int[] utilisePotion(){
 		if( canUtilisePotion()){
 			 this.nbPotion -=1; 
@@ -58,10 +63,7 @@ public class Inventaire implements Serializable {
 		 return this.equipement; 
 	}
 	
-	
-	
-	
-
+	//Arme
 	public boolean canThrowArme(){
 		return(nbArme !=0);
 	}
@@ -80,11 +82,7 @@ public class Inventaire implements Serializable {
 		 return this.equipement; 
 	}
 	
-	
-	
-	
-	
-	
+	//Armure
 	public boolean canThrowArmure(){
 		return(nbArmure !=0);
 	}
@@ -103,7 +101,7 @@ public class Inventaire implements Serializable {
 		 return this.equipement; 
 	}
 
-	
+	//Boule de feu (parchemin)
 	public boolean canUseBoule(){
 		return(nbParchemin !=0);
 	}

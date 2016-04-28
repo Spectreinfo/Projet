@@ -5,8 +5,10 @@ import Projet.GUI.*;
 import Projet.Autre.*;
 
 public class restartActionListener implements ActionListener {
-	JTextArea textArea;
-	int taille;
+	// Pour commencer une prochaine partie à la fin d'une première
+	private JTextArea textArea;
+	private int taille;
+	
 	public restartActionListener(JTextArea textArea){
 		this.textArea = textArea; 
 		}

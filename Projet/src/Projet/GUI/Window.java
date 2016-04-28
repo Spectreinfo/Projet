@@ -11,10 +11,10 @@ public class Window extends JPanel {
 	private JPanel panel;
 	private JButton restartButton;
 	private JTextArea textArea;
-	JFrame window;
-	//private InventaireAffichage inv = new InventaireAffichage();
+	private JFrame window;
 	
 	public Window(){
+		//Constructeur pour fenêtre de lancement du jeu en début de partie
 	    JFrame window = new JFrame("Gandalf vs the JARS JARS");
 	    window.setLocationRelativeTo(null);
 	    window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -24,8 +24,9 @@ public class Window extends JPanel {
 	    window.getContentPane().add(this.map);
 	    window.setVisible(true); 
 	   }	
+	
 	public Window(int nEn){
-		 
+		//Constructeur pour fenêtre de relance du jeu en fin de partie
 		JFrame newWindow = new JFrame("Gandalf vs the JARS JARS");
 		newWindow.setLocationRelativeTo(null);
 		newWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,7 +36,7 @@ public class Window extends JPanel {
 	    textArea = new JTextArea(1,5);
 		restartButton = new JButton("Nouveau niveau");
 	    restartButton.addActionListener(new restartActionListener(textArea)); 
-	    JLabel label1 = new JLabel("Il restait :"+ Integer.toString(nEn) +" ennemis");
+	    JLabel label1 = new JLabel("Il restait :"+ Integer.toString(nEn) +" ennemis. Vous avez aimé?");
 	    panel.add(label1);
 		panel.add(textArea); 
 		panel.add(restartButton); 
@@ -45,6 +46,7 @@ public class Window extends JPanel {
 	}
 	
 	public void draw(int[][] mapMatrix, int Life, int Attaque, int Armure , int[] Equipement, int nEn){
+		// Set les éléments dans map puis la peint.
 		map.setMapMatrix(mapMatrix);
 		map.setLife(Life);
 		map.setArmure(Armure);
@@ -53,10 +55,7 @@ public class Window extends JPanel {
 		map.setnEn(nEn);
 		map.repaint();
 	}
-
-	//public void draw(int Life){
-	//	Life.repaint();
-	//}
+	
 	public void setKeyListener(KeyListener keyboard){
 	    this.map.addKeyListener(keyboard);
 	}

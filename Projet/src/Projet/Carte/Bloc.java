@@ -11,6 +11,7 @@ public class Bloc implements Serializable {
     this.posx = posx; 
     this.posy = posy; 
   }  
+  
   public int getPosX(){
 	  return this.posx;
   }

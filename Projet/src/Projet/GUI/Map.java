@@ -5,15 +5,11 @@ import java.awt.Graphics;
 import javax.swing.JPanel;
 import java.awt.Font;
 import Projet.Autre.Jeu;
-import Projet.Personnage.Joueur;
-
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
-
 import javax.imageio.*;
-
 
 public class Map extends JPanel implements Serializable {
 	private static final long serialVersionUID = 0L;
@@ -118,6 +114,7 @@ public class Map extends JPanel implements Serializable {
 		}
 	}
 	
+// SETTERS
 	public void setMapMatrix(int[][] mapMatrix){
 		this.mapMatrix = mapMatrix;
 	}

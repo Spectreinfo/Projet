@@ -1,9 +1,9 @@
 package Projet.GUI;
-import java.awt.*;
 import javax.swing.*;
 
 public class MenuJeu extends JPanel{
-	JFrame frame;
+	//Menu du jeu instanciant la partie (soit une nouvelle, soit un chargement)
+	private JFrame frame;
 	private JPanel panel;
 	private JButton startButton;
 	private JButton loadButton;
@@ -12,7 +12,7 @@ public class MenuJeu extends JPanel{
 	public MenuJeu(){
 		initialiaze();
 	}
-	public void initialiaze(){
+	private void initialiaze(){
 		JFrame frame = new JFrame("Gandalf vs the JARS JARS");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);

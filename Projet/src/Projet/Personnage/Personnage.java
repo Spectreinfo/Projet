@@ -1,8 +1,6 @@
 package Projet.Personnage;
-import Projet.GUI.Window;
 
 import java.io.Serializable;
-
 import Projet.Autre.Jeu; 
 
 public abstract class Personnage implements Runnable,Serializable {
@@ -10,11 +8,15 @@ public abstract class Personnage implements Runnable,Serializable {
 	protected Jeu jeu;
 	protected int pX;
 	protected int pY;
-	public int vie; 
+	protected int vie; 
 	protected int attaque;
 	protected int armure;
 	protected int orientation; 
-	public transient Thread thread;
+	private transient Thread thread;
+	
+	
+//CONSTRUCTEUR
+	
 	
 	public Personnage(Jeu jeu, int vie, int attaque, int armure, int orientation, int pX, int pY){
 		this.pX =pX;
@@ -26,6 +28,7 @@ public abstract class Personnage implements Runnable,Serializable {
 		this.orientation = orientation;
 	}
 	
+//GETTERS
 	public int getPosX(){
 		return this.pX;
 	}
@@ -33,39 +36,45 @@ public abstract class Personnage implements Runnable,Serializable {
 	public int getPosY(){
 		return this.pY ;
 	}
-	public void move(int x, int y){
-		this.pX = this.pX + x;
-		this.pY = this.pY + y;
-	}
-	public boolean canMove(int x, int y){
-		final int C =jeu.view ;
-		int[][] visible_map = jeu.getVisibleMap();
-		return(visible_map[x+C][y+C]==0 ||visible_map[x+C][y+C]==4 ||visible_map[x+C][y+C]==5 || visible_map[x+C][y+C]==6 || visible_map[x+C][y+C]==7|| visible_map[x+C][y+C]==8);	
-	}
+	
 	public int getAttaque(){
 		return this.attaque;
 	}
+	
 	public int getArmure(){
 		return this.armure; 
 	}
+	
 	public int getVie(){
 		return this.vie; 
 	}
-	public void changeVie(int a){
-		if(a>0){
-			this.vie -=a;
-		}
-	}
+
 	public int getOrientation(){
 		return this.orientation; 
 	}
+	
+	public Thread getThread(){
+		return thread;
+	}
+	
+//CHANGE
+	public void changeVie(int a){
+		if(a>0){ 	//si les dégâts infligés sont négatifs, cela signifierait que le personnage se soigne, ce qui est impossible
+			this.vie -=a;
+		}
+	}
+	
 	public void changeOrientation(int i){
 		this.orientation=i; 
 	}
-	public void run(){	
+
+//SIGNATURE
+	public void move(int x, int y){
 	}
-	public Thread getThread(){
-		return thread;
+	public boolean canMove(int x, int y){
+		return(false);	     //Par défaut
+	}
+	public void run(){	
 	}
 	public void heal(){
 	}
