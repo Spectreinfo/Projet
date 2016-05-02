@@ -30,13 +30,12 @@ public class Inventaire implements Serializable {
 		return this.equipement; 
 	}
 	
-	public int[] setEquipement(){
+	public void setEquipement(){
 		this.equipement[0]= this.occup; 
 		this.equipement[1]= this.nbPotion; 
 		this.equipement[2]= this.nbArmure; 
 		this.equipement[3]= this.nbArme;
 		this.equipement[4]= this.nbParchemin;
-		return this.equipement;
 	}
 	
 	
@@ -47,77 +46,69 @@ public class Inventaire implements Serializable {
 		return(nbPotion !=0);
 	}
 	
-	public int[] utilisePotion(){
+	public void utilisePotion(){
 		if( canUtilisePotion()){
 			 this.nbPotion -=1; 
 			 this.occup-=1;
 			 setEquipement(); 
 		}
-		return this.equipement; 
 	}
 	
-	public int[] addPotion(){
+	public void addPotion(){
 		 this.nbPotion +=1; 
 		 this.occup +=1;
 		 setEquipement();
-		 return this.equipement; 
 	}
 	
 	//Arme
 	public boolean canThrowArme(){
 		return(nbArme !=0);
 	}
-	public int[] throwArme(){
+	public void throwArme(){
 		if(canThrowArme()){
 			this.nbArme -=1;
 			 this.occup-=1;
 			 setEquipement(); 
 		}
-		return this.equipement; 
 	}
-	public int[] addArme(){
+	public void addArme(){
 		 this.nbArme +=1; 
 		 this.occup +=1;
 		 setEquipement();
-		 return this.equipement; 
 	}
 	
 	//Armure
 	public boolean canThrowArmure(){
 		return(nbArmure !=0);
 	}
-	public  int[] throwArmure(){
+	public void throwArmure(){
 		if(canThrowArmure()){
 			this.nbArmure-=1;
 			 this.occup-=1;
 			 setEquipement(); 
 		} 
-		return this.equipement; 
 	}
-	public int[] addArmure(){
+	public void addArmure(){
 		 this.nbArmure +=1; 
 		 this.occup +=1;
-		 setEquipement();
-		 return this.equipement; 
+		 setEquipement(); 
 	}
 
 	//Boule de feu (parchemin)
 	public boolean canUseBoule(){
 		return(nbParchemin !=0);
 	}
-	public  int[] useBoule(){
+	public void useBoule(){
 		if(canUseBoule()){
 			this.nbParchemin-=1;
 			 this.occup-=1;
 			 setEquipement(); 
 		} 
-		return this.equipement; 
 	}
-	public int[] addParchemin(){
+	public void addParchemin(){
 		 this.nbParchemin +=1; 
 		 this.occup +=1;
 		 setEquipement();
-		 return this.equipement; 
 	}
 	
 	
