@@ -1,6 +1,9 @@
 package Projet.Object;
 
-public class Potion extends Objet{
+import java.io.Serializable;
+
+public class Potion extends Objet implements Serializable {
+	private static final long serialVersionUID = 0L;
 	private static int gain  = 25; 
 	
 	public Potion(int x, int y){

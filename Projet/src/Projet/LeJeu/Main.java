@@ -3,7 +3,7 @@ import Projet.GUI.*;
 
 public abstract class Main {
 
-	public static void main(String[] ars){
+	public static void main(String[] args){
 		MenuJeu menu = new MenuJeu();		
 	}
 }

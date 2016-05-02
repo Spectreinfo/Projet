@@ -23,24 +23,6 @@ public class Salle{
 		this.h = h;
 	  
 	}
-
-	
-// GETTERS:
-	
-	
-	public int getSalleX(){
-		return this.x;
-	}
-	public int getSalleY(){
-		return this.y;
-	}
-	public int getSalleL(){
-		return this.l;
-	}
-	public int getSalleH(){
-		return this.h;
-	}
-
 	
 // CONSTRUCTION SALLES COULOIRS
 	

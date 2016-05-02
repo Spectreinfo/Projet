@@ -28,11 +28,10 @@ public  class Jeu implements Serializable {
 	public int taille_de_la_carte;
 	
 	private ArrayList<Bloc> blocs= new ArrayList<Bloc>();
-	
 	private int[][] mapVisible = new int[2*view+1][2*view+1];
 	
 	//Attributs inventaire
-	public Inventaire inventaire = new Inventaire(6,0, 0, 0, 2);
+	private Inventaire inventaire = new Inventaire(6,0, 0, 0, 2);
 	private int emploi = 0;
 	
 	//Attributs personnages et objets
@@ -123,7 +122,7 @@ public  class Jeu implements Serializable {
 	
 	
 	//Crée la liste de blocs
-	public ArrayList<Bloc> setBlocks(){
+	private ArrayList<Bloc> setBlocks(){
 	// retourne une liste de blocs accessible à partir de salles générées aléatoirement et reliées.
 		ArrayList<Salle> Salles = new ArrayList<Salle>();
 		boolean value;
@@ -357,7 +356,7 @@ public  class Jeu implements Serializable {
 	}
 	
 	//Lâche un objet aléatoire
-	public void loot(int x, int y){
+	private void loot(int x, int y){
 		int i = random.nextInt(8);
 		if (i ==0){
 			objetsPotions.add(new Potion(x,  y));
@@ -375,7 +374,7 @@ public  class Jeu implements Serializable {
 	}
 	
 	//Renvoie vrai si le joueur est sur un bloc de lave
-	public boolean isOnLave(){
+	private boolean isOnLave(){
 		int t = players.get(0).getPosX();
 		int v = players.get(0).getPosY();
 		boolean value = false;
@@ -543,7 +542,7 @@ public  class Jeu implements Serializable {
 // RENITIALISE 	
 	
 	
-	public void renitialise(){
+	private void renitialise(){
 		//Si les ennemis sont tous morts ou si le joueur est mort, lance un menu spécial pour recommencer une partie
 		if(players.size() ==1 ||  players.get(0).getVie()<=0){
 			for (Thread thread: threadList){

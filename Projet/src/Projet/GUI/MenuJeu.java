@@ -10,9 +10,9 @@ public class MenuJeu extends JPanel{
 	private JTextArea textArea;
 	
 	public MenuJeu(){
-		initialiaze();
+		initialize();
 	}
-	private void initialiaze(){
+	private void initialize(){
 		JFrame frame = new JFrame("Gandalf vs the JARS JARS");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
