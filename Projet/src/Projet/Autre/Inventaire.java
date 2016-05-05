@@ -3,6 +3,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Inventaire implements Serializable {
+	// classe permettant de contrôler les possessions du joueur
 	private static final long serialVersionUID = 0L;
 	private int taille;
 	private int nbPotion; 
@@ -40,6 +41,10 @@ public class Inventaire implements Serializable {
 	
 	
 	//GESTION
+	
+	// Schéma : 1) peut-on utiliser ? 
+	//			2) utilise
+	//			3) ajoute 
 	
 	//Potion
 	public boolean canUtilisePotion(){

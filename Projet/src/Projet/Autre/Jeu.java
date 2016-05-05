@@ -20,13 +20,12 @@ public  class Jeu implements Serializable {
 	private Random random = new Random();
 	public transient Window window;
 	
-	//Attributs construction carte
+	//Attributs construction de la carte
 	public static int view =10; 
 	private int minimum_size=5;
 	private int taille_max;
 	private int nombre_de_salles;   
 	public int taille_de_la_carte;
-	
 	private ArrayList<Bloc> blocs= new ArrayList<Bloc>();
 	private int[][] mapVisible = new int[2*view+1][2*view+1];
 	
@@ -40,10 +39,10 @@ public  class Jeu implements Serializable {
 	private int nbObjet;
 	private int nLave;
 	
-	private int attaqueJ = 30; 
-	private int attaqueE = 10; 
-	private int attaqueB = 5; 
-	private int attaqueF = 100;
+	private int attaqueJ = 30; 			//Attaque de base du joueur
+	private int attaqueE = 10; 			//Attaque des ennemis
+	private int attaqueB = 5; 			//Attaque des blocs de lave
+	private int attaqueF = 100;			//Attaque boule de feu
 	private int portée = 2; 
 	public int vie =100;
 	
@@ -80,14 +79,14 @@ public  class Jeu implements Serializable {
 		ArrayList<Integer> posRand2 = new ArrayList<Integer>();
 		ArrayList<Integer> posRand3 = new ArrayList<Integer>();
 		
-		//ajoute les blocs laves
+		//ajoute les blocs laves sur positions aléatoires
 		for(int k=0; k<=nLave; k++){
 			posRand3.add(random.nextInt(taille));
 			Bloc blocStart = blocs.get(posRand3.get(k)); 
 			laveList.add(new Lave(this,attaqueB, blocStart.getPosX(),  blocStart.getPosY()));
 		}
 		
-		//ajoute les personnages
+		//ajoute les personnages sur positions aléatoires
 		for(int w=0; w<=nombreEnnemi; w++){
 			posRand.add(random.nextInt(taille));
             Bloc blocStart = blocs.get(posRand.get(w)); 
@@ -98,7 +97,7 @@ public  class Jeu implements Serializable {
             	threadList.add(players.get(w).getThread());
             }
 		}
-		//ajoute les objets
+		//ajoute les objets sur positions aléatoires
 		for(int n=0; n<nbObjet;n++){
 			posRand2.add( random.nextInt(taille));
             Bloc blocStart = blocs.get(posRand2.get(n)); 
@@ -133,8 +132,8 @@ public  class Jeu implements Serializable {
 		ArrayList<Bloc> blocs = new ArrayList<Bloc>();
 		ArrayList<Salle> couloir = new ArrayList<Salle>();
 		int i=0; 
-		while(i<nombre_de_salles){											//boucle créant un nombre déterminé de salle ne se touchant pas 
-			value = true;													//et positionnée aléatoirement (et de taille aléatoire).
+		while(i<nombre_de_salles){											//boucle créant un nombre déterminé de salles ne se touchant pas 
+			value = true;													//et positionnées aléatoirement (ainsi que de taille aléatoire).
 			rdl = minimum_size + random.nextInt(taille_max- minimum_size);
 			rdh = minimum_size + random.nextInt(taille_max-minimum_size);
 			rdx =view +random.nextInt(taille_de_la_carte-rdl-2*view);
@@ -333,6 +332,7 @@ public  class Jeu implements Serializable {
 						emploi+=1;
 						if(emploi ==5){
 							actionArme();
+							emploi=0;
 						}
 					}
 					if(player.getVie()<=0){				//Si ennemi meurt
